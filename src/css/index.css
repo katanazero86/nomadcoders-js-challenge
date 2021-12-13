@@ -39,22 +39,12 @@ main, header, footer, article, section, nav {
 
 .water-drops-wrap {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
     overflow: hidden;
-}
-
-.app .water-drops {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .water-drops .water-drop {
@@ -118,7 +108,7 @@ main, header, footer, article, section, nav {
 
 .water-drops .water-drop:nth-child(7) {
     transform: scale(0.4) translate(-400px, 550px);
-    border-radius: 33% 67% 70% 30% / 39% 30% 70% 61% ;
+    border-radius: 33% 67% 70% 30% / 39% 30% 70% 61%;
 }
 
 .water-drops .water-drop:nth-child(8) {
@@ -128,9 +118,8 @@ main, header, footer, article, section, nav {
 
 .app__body {
     height: 100%;
-    background-color: rgba(0,0,0,0.01);
+    background-color: rgba(0, 0, 0, 0.01);
 }
-
 
 .app__footer {
     width: 100%;

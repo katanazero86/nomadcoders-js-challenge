@@ -16,6 +16,7 @@ const getRandomQuote = () => {
     return quotes[Math.floor(Math.random() * 8)];
 };
 
+// join
 const handleJoinClick = () => {
     const userNameInputEl = document.getElementById('user-name');
     if (userNameInputEl.value.trim() === '') {
@@ -26,7 +27,6 @@ const handleJoinClick = () => {
     localStorageModule.setUserName(userNameInputEl.value.trim());
     joinApp();
 };
-
 const joinBtnEl = document.getElementById('join-btn');
 joinBtnEl.addEventListener('click', handleJoinClick);
 
@@ -38,6 +38,55 @@ const handleUserNameInput = e => {
 const userNameInputEl = document.getElementById('user-name');
 userNameInputEl.addEventListener('keyup', handleUserNameInput);
 
+// todo
+const handleAddTodoClick = () => {
+    const todoInputEl = document.getElementById('todo-input');
+    if (todoInputEl.value.trim() === '') {
+        alert('TODO 를 입력해주세요!');
+        todoInputEl.focus();
+        return false;
+    }
+    const todos = JSON.parse(localStorageModule.getTodoAll(localStorageModule.getUserName()));
+    const targetTodo = {
+        idx: 0,
+        description: '',
+        complete: false,
+    };
+    targetTodo.idx = todos.length > 0 ? parseInt(todos[todos.length - 1].idx) + 1 : 0;
+    targetTodo.description = todoInputEl.value.trim();
+    todos.push(targetTodo);
+    localStorageModule.setTodo(localStorageModule.getUserName(), JSON.stringify(todos));
+
+    const divEl = document.createElement('div');
+    divEl.classList.add('todo-item');
+    divEl.dataset.completeIdx = targetTodo.idx;
+    const pEl = document.createElement('p');
+    pEl.innerText = `${targetTodo.description}`
+    pEl.dataset.completeIdx = targetTodo.idx;;
+    const imgEl = document.createElement('img');
+    imgEl.src = './imgs/delete-forever.png';
+    imgEl.alt = 'delete-forever';
+    imgEl.dataset.deleteIdx = targetTodo.idx;
+    divEl.appendChild(pEl);
+    divEl.appendChild(imgEl);
+
+    const appTodoEl = document.querySelector('.app__todo');
+    appTodoEl.appendChild(divEl);
+
+    todoInputEl.value = '';
+
+};
+const todoAddBtnEl = document.getElementById('todo-add-btn');
+todoAddBtnEl.addEventListener('click', handleAddTodoClick);
+
+const handleTodoInput = e => {
+    if (e.keyCode === 13) {
+        handleAddTodoClick();
+    }
+};
+const todoInputEl = document.getElementById('todo-input');
+todoInputEl.addEventListener('keyup', handleTodoInput);
+
 const joinApp = async () => {
 
     const options = {
@@ -45,7 +94,7 @@ const joinApp = async () => {
         timeStyle: 'medium',
     };
 
-// real time clock
+    // real time clock
     const initClock = () => {
         const today = new Date();
         const clockString = new Intl.DateTimeFormat('ko-kr', options).format(today);
@@ -58,7 +107,7 @@ const joinApp = async () => {
         initClock();
     }, 1000);
 
-// quote
+    // quote
     const initQuote = () => {
         const targetQuote = getRandomQuote();
         const quoteEl = document.getElementById('quote');
@@ -88,5 +137,68 @@ const joinApp = async () => {
 
     const appContentsEl = document.querySelector('.app__contents');
     appContentsEl.style.display = 'block';
+
+    // todo
+    const initTodo = () => {
+
+        const appTodoEl = document.querySelector('.app__todo');
+        appTodoEl.addEventListener('click', e => {
+            e.stopPropagation();
+            const targetEl = e.target;
+            const deleteIdx = targetEl.dataset.deleteIdx !== undefined ? parseInt(targetEl.dataset.deleteIdx) : null;
+            const completeIdx = targetEl.dataset.completeIdx !== undefined ? parseInt(targetEl.dataset.completeIdx) : null;
+            console.log(deleteIdx, completeIdx);
+
+            const todos = JSON.parse(localStorageModule.getTodoAll(localStorageModule.getUserName()));
+
+            // delete todo
+            if (deleteIdx !== null) {
+                const newTodos = todos.filter(todo => todo.idx !== deleteIdx)
+                localStorageModule.setTodo(localStorageModule.getUserName(), JSON.stringify(newTodos));
+                targetEl.parentNode.remove();
+            }
+
+            // complete todo
+            if (completeIdx !== null) {
+                const newTodos = todos.map(todo => {
+                    if (todo.idx === completeIdx) {
+                        todo.complete = !todo.complete;
+                        return todo;
+                    }
+                    return todo;
+                });
+                localStorageModule.setTodo(localStorageModule.getUserName(), JSON.stringify(newTodos));
+                targetEl.classList.toggle('todo-item--complete');
+            }
+
+        });
+
+        const todos = JSON.parse(localStorageModule.getTodoAll(localStorageModule.getUserName()));
+        const todoRender = targetTodos => {
+            // todo render
+            const fragment = new DocumentFragment();
+            targetTodos.forEach(todo => {
+                const divEl = document.createElement('div');
+                divEl.classList.add('todo-item');
+                divEl.dataset.completeIdx = todo.idx;
+                if(todo.complete) divEl.classList.add('todo-item--complete');
+                const pEl = document.createElement('p');
+                pEl.innerText = `${todo.description}`
+                pEl.dataset.completeIdx = todo.idx;;
+                const imgEl = document.createElement('img');
+                imgEl.src = './imgs/delete-forever.png';
+                imgEl.alt = 'delete-forever';
+                imgEl.dataset.deleteIdx = todo.idx;
+                divEl.appendChild(pEl);
+                divEl.appendChild(imgEl);
+                fragment.appendChild(divEl);
+            });
+
+            const appTodoEl = document.querySelector('.app__todo');
+            appTodoEl.appendChild(fragment);
+        };
+        todoRender(todos);
+    };
+    initTodo();
 
 };

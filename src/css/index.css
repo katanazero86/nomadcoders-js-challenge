@@ -44,16 +44,6 @@ main, header, footer, article, section, nav {
     background-size: 100% 100%;
 }
 
-.app__body {
-    display: grid;
-    grid-auto-rows: 150px;
-    grid-gap: 12px;
-    align-content: center;
-    justify-content: center;
-    position: relative;
-    z-index: 100;
-}
-
 .water-drops-wrap {
     position: absolute;
     display: flex;
@@ -189,6 +179,47 @@ main, header, footer, article, section, nav {
     text-shadow: 0 10px 20px rgb(0 0 0 / 19%), 0 6px 6px rgb(0 0 0 / 23%);;
 }
 
+.todo__add {
+    padding: 12px;
+    margin: 0;
+    border-radius: 4px;
+    display: flex;
+}
+
+.todo__add > input[type='text'] {
+    appearance: none;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    padding: 8px;
+    letter-spacing: -0.5px;
+    width: 100%;
+    margin-right: 4px;
+    border-radius: 4px;
+}
+
+.todo__add > input[type='text']:focus {
+    outline: 1px solid var(--purple-color);
+}
+
+.todo__add > button[type='button'] {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--purple-color);
+    background-color: var(--purple-color);
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.todo__add > button[type='button']:hover {
+    border-color: var(--purple-hover-color);
+    background-color: var(--purple-hover-color);
+}
+
 .app__login > input[type='text'] {
     appearance: none;
     border: none;
@@ -225,16 +256,53 @@ main, header, footer, article, section, nav {
 
 .app__todo {
     margin-top: 20px;
-    background-color: rgba(0, 0, 0, 0.35);
     border-radius: 4px;
     padding: 12px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    max-height: 250px;
+    overflow: auto;
+    background-color: rgba(242,242,242, 0.45);
+}
+
+.app__todo::-webkit-scrollbar {
+    width: 8px;
+}
+
+.app__todo::-webkit-scrollbar-thumb {
+    background-color: #f2f2f2;
+    border-radius:10px;
 }
 
 .todo-item {
     color : var(--white-color);
     padding: 4px;
     letter-spacing: -0.5px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.todo-item:not(:first-child) {
+    margin-top: 6px;
+}
+
+.todo-item:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+    font-weight: 600;
+}
+
+.todo-item > img {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.todo-item--complete {
+    text-decoration : line-through;
+    font-style: italic;
 }
 
 .app__footer {

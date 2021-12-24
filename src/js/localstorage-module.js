@@ -6,11 +6,11 @@ export default {
         localStorage.setItem('userName', targetUserName);
     },
 
-    setTodo(description) {
-
+    setTodo(targetUserName, targetTodos) {
+        localStorage.setItem(targetUserName, targetTodos);
     },
 
     getTodoAll(targetUserName) {
-
+        return localStorage.getItem(targetUserName) ? localStorage.getItem(targetUserName) : '[]';
     }
 }

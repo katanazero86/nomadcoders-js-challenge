@@ -11,6 +11,10 @@
     <!-- import css -->
     <link rel="stylesheet" type="text/css" href="./css/index.css"/>
 
+    <script src="./components/clock-component.js"></script>
+    <script src="./components/greeting-component.js" ></script>
+    <script src="./components/quote-component.js"></script>
+
 </head>
 <body>
 <main class="app">
@@ -27,7 +31,15 @@
         </div>
     </div>
     <section class="app__body">
-        main
+        <div class="app__login">
+            <input id="user-name" type="text" placeholder="What is your name?"/>
+            <button id="join-btn" type="button">Join</button>
+        </div>
+        <div class="app__contents">
+            <clock-component id="clock" class="clock join--on" time=""/>
+            <greeting-component id="greeting" class="greeting join--on" user=""/>
+            <quote-component id="quote" class="quote join--on" sentence="" />
+        </div>
     </section>
     <footer class="app__footer">
         <div class="links">
@@ -42,4 +54,4 @@
 </main>
 </body>
 </html>
-
+<script src="./js/index.js" defer></script>

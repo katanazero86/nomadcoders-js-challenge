@@ -3,6 +3,9 @@
     --footer-bg: #ffffff;
     --footer-border-color: #f0f0f0;
     --footer-links-color: #49537a;
+    --purple-color: #673ab7;
+    --purple-hover-color : #58319b;
+    --indigo-color: #3f51b5;
 }
 
 html, body, h1, h2, h3, h4, h5, h6, p, strong {
@@ -119,6 +122,79 @@ main, header, footer, article, section, nav {
 .app__body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.01);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.app__login {
+    background-color: rgba(0, 0, 0, 0.35);
+    padding: 12px;
+    margin: 0;
+    width: 375px;
+    height: 60px;
+    border-radius: 4px;
+    display: flex;
+    align-items: stretch;
+    z-index: 1000;
+}
+
+.app__contents {
+    position: relative;
+    z-index: 1000;
+}
+
+.app__contents .clock {
+    font-size: 65px;
+    color: #ffffff;
+    text-shadow: 0 2px 5px rgb(0 0 0 / 12%);
+}
+
+.app__contents .greeting {
+    font-size: 40px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.app__contents .quote {
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.app__login > input[type='text'] {
+    appearance: none;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    padding: 8px;
+    letter-spacing: -0.5px;
+    width: 100%;
+    margin-right: 4px;
+    border-radius: 4px;
+}
+
+.app__login > input[type='text']:focus {
+    outline: 2px solid var(--purple-color);
+}
+
+.app__login > button[type='button'] {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--purple-color);
+    background-color: var(--purple-color);
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.app__login > button[type='button']:hover {
+    border-color: var(--purple-hover-color);
+    background-color: var(--purple-hover-color);
 }
 
 .app__footer {
@@ -142,4 +218,12 @@ main, header, footer, article, section, nav {
 
 .links a:hover {
     text-decoration: underline;
+}
+
+.join--off {
+    display: none;
+}
+
+.join--on {
+    display: block;
 }

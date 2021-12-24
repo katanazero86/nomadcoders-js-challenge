@@ -30,14 +30,24 @@ main, header, footer, article, section, nav {
 
 * {
     box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .app {
     min-width: 375px;
     height: 100%;
-    overflow: auto;
     background-color: #f5f5f5;
     position: relative;
+}
+
+.app__body {
+    display: grid;
+    grid-auto-rows: 150px;
+    grid-gap: 12px;
+    align-content: center;
+    justify-content: center;
+    position: relative;
+    z-index: 100;
 }
 
 .water-drops-wrap {

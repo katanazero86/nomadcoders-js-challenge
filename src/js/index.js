@@ -1,5 +1,7 @@
 import localStorageModule from './localstorage-module.js';
 import randomImage from './random-image.js';
+import {getCurrentPosition, checkGeolocationSupport, handleGeolocationError} from './geo-location.js';
+import {OPEN_WEATHER_ICONS_BASE_URL, findCurrentWeatherByGeographicCoordinates} from './weather-module.js';
 
 const quotes = [
     'It is kind of fun to do the impossible. — Walt Disney',
@@ -62,7 +64,8 @@ const handleAddTodoClick = () => {
     divEl.dataset.completeIdx = targetTodo.idx;
     const pEl = document.createElement('p');
     pEl.innerText = `${targetTodo.description}`
-    pEl.dataset.completeIdx = targetTodo.idx;;
+    pEl.dataset.completeIdx = targetTodo.idx;
+    ;
     const imgEl = document.createElement('img');
     imgEl.src = './imgs/delete-forever.png';
     imgEl.alt = 'delete-forever';
@@ -147,7 +150,6 @@ const joinApp = async () => {
             const targetEl = e.target;
             const deleteIdx = targetEl.dataset.deleteIdx !== undefined ? parseInt(targetEl.dataset.deleteIdx) : null;
             const completeIdx = targetEl.dataset.completeIdx !== undefined ? parseInt(targetEl.dataset.completeIdx) : null;
-            console.log(deleteIdx, completeIdx);
 
             const todos = JSON.parse(localStorageModule.getTodoAll(localStorageModule.getUserName()));
 
@@ -181,10 +183,11 @@ const joinApp = async () => {
                 const divEl = document.createElement('div');
                 divEl.classList.add('todo-item');
                 divEl.dataset.completeIdx = todo.idx;
-                if(todo.complete) divEl.classList.add('todo-item--complete');
+                if (todo.complete) divEl.classList.add('todo-item--complete');
                 const pEl = document.createElement('p');
                 pEl.innerText = `${todo.description}`
-                pEl.dataset.completeIdx = todo.idx;;
+                pEl.dataset.completeIdx = todo.idx;
+                ;
                 const imgEl = document.createElement('img');
                 imgEl.src = './imgs/delete-forever.png';
                 imgEl.alt = 'delete-forever';
@@ -200,5 +203,70 @@ const joinApp = async () => {
         todoRender(todos);
     };
     initTodo();
+
+    // location & weather
+    const initGeoLocationAndWeather = () => {
+        if (!checkGeolocationSupport()) {
+            console.err('geolocation not supported');
+            return false;
+        }
+
+        getCurrentPosition().then(async (position) => {
+            const lat = position?.coords?.latitude;
+            const lon = position?.coords?.longitude;
+            const currentWeatherResult = await findCurrentWeatherByGeographicCoordinates({lat, lon});
+            if (currentWeatherResult.status === 200) {
+                currentWeatherResult.json().then(data => {
+                    const currentWeather = {...data};
+                    const renderWeatherHtml = `
+            <header class="current-weather__header">
+                <h2>
+                    Weather in ${currentWeather.name}, ${currentWeather.sys.country}
+                </h2>
+                <div class="weather">
+                    <figure>
+                        <img src="${OPEN_WEATHER_ICONS_BASE_URL}/${currentWeather.weather[0].icon}@2x.png" width="100"
+                             height="100"/>
+                        <span class="weather-current-temperature">${(currentWeather.main.temp - 273.15).toFixed(1)} °C</span>
+                    </figure>
+                    <p>${currentWeather.weather[0].main}</p>
+                </div>
+            </header>
+            <div class="current-weather__body">
+                <div class="weather-item">
+                    <p class="weather-item__title">풍향(Wind)</p>
+                    <p class="weather-item__value">${currentWeather.wind.speed} m/s | ${currentWeather.wind.deg} deg</p>
+                </div>
+                <div class="weather-item">
+                    <p class="weather-item__title">구름량(Cloudiness)</p>
+                    <p class="weather-item__value">${currentWeather.clouds.all} %</p>
+                </div>
+                <div class="weather-item">
+                    <p class="weather-item__title">압력(Pressure)</p>
+                    <p class="weather-item__value">${currentWeather.main.pressure} hpa</p>
+                </div>
+                <div class="weather-item">
+                    <p class="weather-item__title">습기(Humidity)</p>
+                    <p class="weather-item__value">${currentWeather.main.humidity} %</p>
+                </div>
+                <div class="weather-item">
+                    <p class="weather-item__title">지리 좌표(Geo coords)</p>
+                    <p class="weather-item__value">[${currentWeather.coord.lat}, ${currentWeather.coord.lon}]</p>
+                </div>
+            </div>
+    `;
+
+                    const currentWeatherEl = document.querySelector('.current-weather');
+                    currentWeatherEl.innerHTML = renderWeatherHtml;
+
+                });
+            }
+        }).catch(error => {
+            alert(handleGeolocationError(error));
+            return false;
+        });
+
+    };
+    initGeoLocationAndWeather();
 
 };

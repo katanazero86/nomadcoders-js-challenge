@@ -158,6 +158,8 @@ main, header, footer, article, section, nav {
 .app__contents .clock {
     font-size: 65px;
     color: #ffffff;
+    letter-spacing: -0.5px;
+    text-align: center;
     text-shadow: 0 2px 5px rgb(0 0 0 / 12%);
 }
 

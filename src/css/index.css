@@ -4,8 +4,9 @@
     --footer-border-color: #f0f0f0;
     --footer-links-color: #49537a;
     --purple-color: #673ab7;
-    --purple-hover-color : #58319b;
+    --purple-hover-color: #58319b;
     --indigo-color: #3f51b5;
+    --white-color: #fcfcfc;
 }
 
 html, body, h1, h2, h3, h4, h5, h6, p, strong {
@@ -36,8 +37,11 @@ main, header, footer, article, section, nav {
 .app {
     min-width: 375px;
     height: 100%;
-    background-color: #f5f5f5;
+    background-color: transparent;
     position: relative;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 .app__body {
@@ -153,26 +157,36 @@ main, header, footer, article, section, nav {
 .app__contents {
     position: relative;
     z-index: 1000;
+    display: none;
+    animation: fade-in 0.25s ease-in;
 }
 
 .app__contents .clock {
     font-size: 65px;
-    color: #ffffff;
+    color: var(--white-color);
     letter-spacing: -0.5px;
     text-align: center;
-    text-shadow: 0 2px 5px rgb(0 0 0 / 12%);
+    text-shadow: 0 10px 20px rgb(0 0 0 / 19%), 0 6px 6px rgb(0 0 0 / 23%);;
 }
 
 .app__contents .greeting {
-    font-size: 40px;
-    color: #ffffff;
+    font-size: 35px;
+    color: var(--white-color);
     font-weight: 600;
+    text-shadow: 0 10px 20px rgb(0 0 0 / 19%), 0 6px 6px rgb(0 0 0 / 23%);;
+    text-align: center;
+    padding: 10px 0;
+    word-break: break-all;
 }
 
 .app__contents .quote {
-    font-size: 18px;
-    color: #ffffff;
+    font-size: 16px;
+    color: var(--white-color);
     font-weight: 600;
+    letter-spacing: -0.5px;
+    text-align: center;
+    word-break: break-all;
+    text-shadow: 0 10px 20px rgb(0 0 0 / 19%), 0 6px 6px rgb(0 0 0 / 23%);;
 }
 
 .app__login > input[type='text'] {
@@ -209,6 +223,20 @@ main, header, footer, article, section, nav {
     background-color: var(--purple-hover-color);
 }
 
+.app__todo {
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 4px;
+    padding: 12px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.todo-item {
+    color : var(--white-color);
+    padding: 4px;
+    letter-spacing: -0.5px;
+}
+
 .app__footer {
     width: 100%;
     padding: 20px 40px;
@@ -232,10 +260,13 @@ main, header, footer, article, section, nav {
     text-decoration: underline;
 }
 
-.join--off {
-    display: none;
-}
 
-.join--on {
-    display: block;
+/* animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
